@@ -1,0 +1,9 @@
+lb:
+  apiserver_lb: "172.16.1.41"
+  kube_proxy_port: 6443
+  k8s_lb_path: "/etc/nginx/k8s-lb.d/"
+  k8s_masters:
+    - host: 1
+      ip: "172.16.1.21"
+    - host: 2
+      ip: "172.16.1.22"

@@ -1,0 +1,30 @@
+---
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Create k8s-lb.d directory
+  file:
+    path: "{{ lb.k8s_lb_path }}"
+    state: directory
+    mode: 0755
+
+- name: Add Nginx K8s load balancer include to nginx.conf
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    line: "include /etc/nginx/k8s-lb.d/*.conf;"
+    insertafter: EOF
+    state: present
+    backup: false
+    create: false
+
+- name: Copy configuration k8s
+  template:
+    src: "k8s-lb.j2"
+    dest: "{{ lb.k8s_lb_path }}/k8s-lb.conf"
+    mode: 0644
+
+- name: Restart Nginx
+  shell: sudo nginx -s reload
