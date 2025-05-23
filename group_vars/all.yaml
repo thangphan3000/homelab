@@ -1,3 +1,6 @@
+common:
+  ansible_architecture: arm64
+
 lb:
   ansible_user_id_auth: ansible
   haproxy_stats_port: 9000

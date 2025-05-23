@@ -1,0 +1,24 @@
+---
+- name: Checking Host(s) Information
+  hosts: ["{{ user_input if user_input != '' else 'all' }}"]
+  gather_facts: false
+  roles:
+    - { role: checking-hosts, tags: checking-hosts }
+  vars_prompt:
+    - name: user_input
+      prompt: "Enter the group name in hosts (or press Enter for 'all' to ignore)"
+      default: "{{ groups | join(',') }}"
+      private: false
+
+- name: Setup loadbalancers
+  hosts: [lb]
+  roles:
+    - { role: loadbalancer, tags: lb }
+  become: yes
+
+- name: Ensure common
+  hosts: [master, worker]
+  roles:
+    - { role: common, tags: common }
+    - { role: container-runtime, tags: container-runtime }
+  become: yes
