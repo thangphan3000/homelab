@@ -1,0 +1,23 @@
+vrrp_instance vi_1 {
+  state {{ 'MASTER' if ansible_host == hostvars[groups['lb'][0]]['ansible_host'] else 'BACKUP' }}
+  priority {{ '102' if ansible_host == hostvars[groups['lb'][0]]['ansible_host'] else '100' }}
+  interface {{ lb.network_interface }}
+  unicast_src_ip {{ ansible_host }}
+  unicast_peer {
+  {% for host in groups['lb'] %}
+    {% if hostvars[host]['ansible_host'] != ansible_host %}
+      {{ hostvars[host]['ansible_host'] }}
+    {% endif %}
+  {% endfor %}
+  }
+
+  virtual_router_id 52
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass secret
+  }
+  virtual_ipaddress {
+    {{ lb.cluster_vip }}/24
+  }
+}
