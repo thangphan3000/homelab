@@ -9,6 +9,7 @@ Vagrant.configure('2') do |config|
       node.vm.box_version = "202502.21.0"
       node.vm.hostname    = "k8s-lb-#{idx}"
       node.vm.network :private_network, ip: "172.16.0.1#{idx}"
+      config.vm.network 'forwarded_port', guest: 9000, host: 9000, auto_correct: true
       node.vm.provider :virtualbox do |vb|
         vb.name   = "k8s-lb-#{idx}"
         vb.memory = 1024

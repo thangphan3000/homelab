@@ -1,4 +1,4 @@
-ansible:
+common:
   ansible_architecture: arm64
   ansible_distribution: ubuntu
   ansible_distribution_codename: noble
