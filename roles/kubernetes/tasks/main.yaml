@@ -1,0 +1,5 @@
+---
+- include_tasks:
+    file: kubernetes.yaml
+    apply:
+      tags: kubernetes

@@ -1,5 +1,5 @@
 ---
-- name: Checking Host(s) Information
+- name: checking Host(s) Information
   hosts: ["{{ user_input if user_input != '' else 'all' }}"]
   gather_facts: false
   roles:
@@ -10,15 +10,21 @@
       default: "{{ groups | join(',') }}"
       private: false
 
-- name: Setup loadbalancers
+- name: setup load balancers
   hosts: [lb]
   roles:
-    - { role: loadbalancer, tags: lb }
+    - { role: load-balancer, tags: lb }
   become: yes
 
-- name: Ensure common
+- name: ensure common
   hosts: [master, worker]
   roles:
     - { role: common, tags: common }
     - { role: container-runtime, tags: container-runtime }
+  become: yes
+
+- name: deploy kubernetes cluster
+  hosts: [cluster]
+  roles:
+    - { role: kubernetes, tags: k8s }
   become: yes

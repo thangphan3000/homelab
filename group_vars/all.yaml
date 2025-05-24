@@ -1,5 +1,7 @@
-common:
+ansible:
   ansible_architecture: arm64
+  ansible_distribution: ubuntu
+  ansible_distribution_codename: noble
 
 lb:
   ansible_user_id_auth: ansible
@@ -7,3 +9,7 @@ lb:
   kube_proxy_port: 6443
   cluster_vip: 172.16.0.100
   network_interface: eth1
+
+kubernetes:
+  version: 1.33
+  components_version: 1.33.1-1.1
