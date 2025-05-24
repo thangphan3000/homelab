@@ -22,9 +22,17 @@
     group: root
     force: true
 
+- name: get architecture
+  shell: dpkg --print-architecture
+  register: architecture
+
+- name: get ubuntu release version
+  shell: lsb_release -cs
+  register: ubuntu_version
+
 - name: add docker APT repository
   apt_repository:
-    repo: "deb [arch={{ common.ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/{{ common.ansible_distribution }} {{ common.ansible_distribution_codename }} stable"
+    repo: "deb [arch={{ architecture.stdout }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ubuntu_version.stdout }} stable"
     state: present
     filename: docker
     update_cache: yes
