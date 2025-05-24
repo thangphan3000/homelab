@@ -33,7 +33,7 @@
   apt:
     name: containerd.io
     state: present
-    update_cache: no
+    update_cache: yes
 
 - name: add containerd default config
   shell: containerd config default | tee /etc/containerd/config.toml
